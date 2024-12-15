@@ -1,0 +1,25 @@
+services:
+    web:
+        image: mimiiovkova/devops-bgapp-web
+        deploy:
+            replicas: 3
+        ports:
+            - 8080:80
+        volumes:
+            - "/home/vagrant/app/devops-bgapp/web:/var/www/html:ro"
+        networks:
+            - app-network
+    db:
+        image: mimiiovkova/devops-bgapp-db
+        networks:
+            - app-network
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+        secrets:
+            - db_root_password
+secrets:
+    db_root_password:
+            external: true
+networks:
+    app-network:
+
